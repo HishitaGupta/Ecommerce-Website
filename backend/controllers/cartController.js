@@ -37,7 +37,7 @@ const updateCart  = async(req,res)=>{
         const userData = await userModel.findById(userId)
         let cartData =await userData.cartData;
 
-        cartData[item[size]]=quantity
+        cartData[itemId][size]=quantity
 
         await userModel.findByIdAndUpdate(userId,{cartData})
 
