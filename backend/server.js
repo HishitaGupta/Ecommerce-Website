@@ -15,7 +15,7 @@ connectDB();
 connectCloudinary();
 
 // Allowed Origins
-const allowedOrigins = ["http://localhost:4000", "https://anotherdomain.com"]; // Add your allowed URLs here
+const allowedOrigins = ["http://localhost:5173", "https://ecommerce-website-hishita.vercel.app"]; // Add your allowed URLs here
 
 // CORS Configuration
 app.use(
