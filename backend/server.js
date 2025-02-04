@@ -1,6 +1,6 @@
 import express from "express";
-import cors from "cors"
-import "dotenv/config"
+import cors from "cors";
+import "dotenv/config";
 import connectDB from "./config/mongodb.js";
 import connectCloudinary from "./config/cloudinary.js";
 import userRouter from "./routes/userRoute.js";
@@ -8,31 +8,42 @@ import productRouter from "./routes/productRoute.js";
 import cartRouter from "./routes/cartRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 
-
-//App Config
-
+// App Config
 const app = express();
-const port =process.env.port || 4000
+const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
-//Middlewares
+// Allowed Origins
+const allowedOrigins = ["http://localhost:4000", "https://anotherdomain.com"]; // Add your allowed URLs here
 
-app.use(express.json())
-app.use(cors())
+// CORS Configuration
+app.use(
+    cors({
+        origin: function (origin, callback) {
+            if (!origin || allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed by CORS"));
+            }
+        },
+        credentials: true, // Allows cookies and authorization headers
+    })
+);
 
-//api endpoints
-app.use("/api/user",userRouter)
-app.use("/api/product",productRouter)
-app.use("/api/cart",cartRouter)
-app.use("/api/order",orderRouter)
+// Middlewares
+app.use(express.json());
 
+// API Endpoints
+app.use("/api/user", userRouter);
+app.use("/api/product", productRouter);
+app.use("/api/cart", cartRouter);
+app.use("/api/order", orderRouter);
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.send("API WORKING");
-})
+});
 
-app.listen(port,()=>{
-    console.log("Server started on port:"+ port);
-    
+app.listen(port, () => {
+    console.log("Server started on port: " + port);
 });
